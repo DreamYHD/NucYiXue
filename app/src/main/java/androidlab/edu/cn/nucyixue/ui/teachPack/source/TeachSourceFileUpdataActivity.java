@@ -19,6 +19,8 @@ import com.avos.avoscloud.SaveCallback;
 import com.leon.lfilepickerlibrary.LFilePicker;
 
 import java.io.FileNotFoundException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 import androidlab.edu.cn.nucyixue.R;
@@ -29,7 +31,7 @@ import butterknife.BindView;
 import butterknife.OnClick;
 
 public class TeachSourceFileUpdataActivity extends BaseActivity {
-    private static final String TAG = "TeacherSourceFileActivi";
+    private static final String TAG = "TeacherSourceFileActivity";
     @BindView(R.id.source_file_name)
     EditText mSourceFileName;
     @BindView(R.id.source_file_descript)
@@ -80,7 +82,7 @@ public class TeachSourceFileUpdataActivity extends BaseActivity {
                 }else {
                     snackBar(findViewById(R.id.update_file), "开始上传", 0);
                     if (mStringList != null && mStringList.size() > 0) {
-                        for (String s : mStringList) {
+                        for (final  String s : mStringList) {
                             try {
                                 final AVFile file = AVFile.withAbsoluteLocalPath(FileUtils.getFileName(s), s);
                                 file.saveInBackground(new SaveCallback() {
@@ -89,18 +91,35 @@ public class TeachSourceFileUpdataActivity extends BaseActivity {
                                         if (mE == null) {
                                             snackBar(findViewById(R.id.update_file), "文件上传成功", 1);
                                             AVObject mObject = new AVObject("FileInfo");
-                                            mObject.put("file",AVObject.createWithoutData("_File",file.getObjectId()));
-                                            mObject.put("size",file.getSize());
+                                            mObject.put("fileId",AVObject.createWithoutData("_File",file.getObjectId()));
+                                            mObject.put("size",(file.getSize())/(1024*1024));
                                             mObject.put("title",mSourceFileName.getText().toString());
                                             mObject.put("user",mAVUserFinal.getObjectId());
-
                                             mObject.put("downnum",0);
+                                            mObject.put("school",mAVUserFinal.get("school"));
                                             mObject.put("description",mSourceFileDescription.getText().toString());
+                                            SimpleDateFormat formatter = new SimpleDateFormat ("yyyy年MM月dd日 HH:mm:ss ");
+                                            Date curDate = new Date(System.currentTimeMillis());//获取当前时间
+                                            String str = formatter.format(curDate);
+                                            mObject.put("time",str);
+                                            Log.i(TAG, "done: ");
+                                            String m[] = new String[2];
+                                            m=FileUtils.getFileName(s).split("\\.");
+                                            Log.i(TAG, "done: "+m.length+file.getName());
+                                            mObject.put("type",m[1]);
+                                            mSourceFileName.setText("");
+                                            mSourceFileDescription.setText("");
+                                            mSourceType.setVisibility(View.GONE);
+                                            mFileLujing.setText("");
+                                            mProgressBar.setProgress(0);
                                             mObject.saveInBackground(new SaveCallback() {
                                                 @Override
                                                 public void done(AVException mE) {
                                                     if ( mE == null){
                                                         Log.i(TAG, "done: 文件上传成功");
+
+                                                    }else {
+                                                        Log.e(TAG, "done: "+mE.toString() );
                                                     }
                                                 }
                                             });
