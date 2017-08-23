@@ -1,11 +1,16 @@
 package androidlab.edu.cn.nucyixue.ui.teachPack.source;
 
 
+import android.content.ComponentName;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.ServiceConnection;
 import android.os.Bundle;
+import android.os.IBinder;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -14,6 +19,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.avos.avoscloud.AVException;
+import com.avos.avoscloud.AVFile;
 import com.avos.avoscloud.AVObject;
 import com.avos.avoscloud.AVQuery;
 import com.avos.avoscloud.FindCallback;
@@ -34,9 +40,7 @@ import butterknife.Unbinder;
  */
 public class TeachSourceFragment extends BaseFragment {
     private static final String TAG = "TeachSourceFragment";
-    @BindView(R.id.swipe_source)
-    SwipeRefreshLayout mSwipeSource;
-    Unbinder unbinder;
+
 
     private List<AVObject> mListRecycler;
     @BindView(R.id.teach_source_recycler)
@@ -45,6 +49,8 @@ public class TeachSourceFragment extends BaseFragment {
     FloatingActionButton mAddFile;
     private TeachSourceAdapter mTeacherSourceAdapter;
     private LinearLayoutManager mLinearLayoutManager;
+    private FileDownloadService.MyBinder mBinder;
+    boolean isRegist = false;
 
     public static TeachSourceFragment getInstance() {
         return new TeachSourceFragment();
@@ -59,6 +65,7 @@ public class TeachSourceFragment extends BaseFragment {
         mTeachSourceRecycler.setAdapter(mTeacherSourceAdapter);
         AVQuery<AVObject> mAVQuery = new AVQuery<>("FileInfo");
         mAVQuery.orderByDescending("createdAt");
+        mAVQuery.include("targetTodoFolder.targetAVUser");
         mAVQuery.findInBackground(new FindCallback<AVObject>() {
             @Override
             public void done(List<AVObject> mList, AVException mE) {
@@ -67,7 +74,6 @@ public class TeachSourceFragment extends BaseFragment {
                     Log.i(TAG, "done: " + mListRecycler.size());
                     if (mListRecycler.size() > 0) {
                         mTeacherSourceAdapter.notifyDataSetChanged();
-                        mSwipeSource.setRefreshing(false);
                     }
                 }
             }
@@ -78,15 +84,15 @@ public class TeachSourceFragment extends BaseFragment {
     protected int getResourcesLayout() {
         return R.layout.fragment_teach_zhibo;
     }
-
     @Override
     protected void logic() {
         mTeacherSourceAdapter.setOnClickerListener(new BaseRecyclerAdapter.OnClickerListener() {
             @Override
-            public void click(View mView, int position) {
+            public void click(View mView, final int position) {
+                Intent mIntent = new Intent(getContext(),TeachSourceFileDownActivity.class);
                 Bundle mBundle = new Bundle();
-                mBundle.putString("key", "");
-                Intent mIntent = new Intent(getContext(), TeachSourceFileDownActivity.class);
+                mBundle.putString("fileId",mListRecycler.get(position).getObjectId().toString());
+                Log.i(TAG, "click: "+mListRecycler.get(position).getObjectId().toString());
                 mIntent.putExtras(mBundle);
                 startActivity(mIntent);
             }
@@ -97,6 +103,8 @@ public class TeachSourceFragment extends BaseFragment {
         Intent mIntent = new Intent(getContext(), TeachSourceFileUpdataActivity.class);
         startActivity(mIntent);
     }
-
-
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+    }
 }

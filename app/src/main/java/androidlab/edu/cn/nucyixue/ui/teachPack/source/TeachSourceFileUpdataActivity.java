@@ -1,5 +1,6 @@
 package androidlab.edu.cn.nucyixue.ui.teachPack.source;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
@@ -14,6 +15,7 @@ import android.widget.TextView;
 import com.avos.avoscloud.AVException;
 import com.avos.avoscloud.AVFile;
 import com.avos.avoscloud.AVObject;
+import com.avos.avoscloud.AVUser;
 import com.avos.avoscloud.ProgressCallback;
 import com.avos.avoscloud.SaveCallback;
 import com.leon.lfilepickerlibrary.LFilePicker;
@@ -86,6 +88,7 @@ public class TeachSourceFileUpdataActivity extends BaseActivity {
                             try {
                                 final AVFile file = AVFile.withAbsoluteLocalPath(FileUtils.getFileName(s), s);
                                 file.saveInBackground(new SaveCallback() {
+                                    @SuppressLint("LongLogTag")
                                     @Override
                                     public void done(AVException mE) {
                                         if (mE == null) {
@@ -94,7 +97,7 @@ public class TeachSourceFileUpdataActivity extends BaseActivity {
                                             mObject.put("fileId",AVObject.createWithoutData("_File",file.getObjectId()));
                                             mObject.put("size",(file.getSize())/(1024*1024));
                                             mObject.put("title",mSourceFileName.getText().toString());
-                                            mObject.put("user",mAVUserFinal.getObjectId());
+                                            mObject.put("user", AVUser.getCurrentUser().get("username"));
                                             mObject.put("downnum",0);
                                             mObject.put("school",mAVUserFinal.get("school"));
                                             mObject.put("description",mSourceFileDescription.getText().toString());
