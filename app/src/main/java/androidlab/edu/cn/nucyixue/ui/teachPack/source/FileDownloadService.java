@@ -40,7 +40,7 @@ public class FileDownloadService extends Service {
         //.setWhen(System.currentTimeMillis());
         //通过builder.build()方法生成Notification对象,并发送通知,id=1
         notifyManager.notify(1, builder.build());
-        startForeground(1,builder.build());
+
 
     }
 
