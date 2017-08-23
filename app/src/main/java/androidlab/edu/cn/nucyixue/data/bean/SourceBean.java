@@ -13,15 +13,6 @@ public class SourceBean {
     private String fileType;//文件类型
     private double size;//文件大小
 
-    public SourceBean(String mTitle, String mSchool, int mDownNum, String mUpdateTime, String mFileType, double mSize) {
-        title = mTitle;
-        school = mSchool;
-        downNum = mDownNum;
-        updateTime = mUpdateTime;
-        fileType = mFileType;
-        size = mSize;
-    }
-
     public String getTitle() {
         return title;
     }

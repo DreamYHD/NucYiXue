@@ -131,7 +131,7 @@ public class MeFragment extends BaseFragment {
                                         @Override
                                         public void done(List<UserInfo> list, AVException e) {
                                             if (e == null) {
-                                                UserInfo info =  list.get(0);
+                                                UserInfo info = list.get(0);
                                                 info.setAvatar(file.getUrl());
                                                 info.saveInBackground(new SaveCallback() {
                                                     @Override
