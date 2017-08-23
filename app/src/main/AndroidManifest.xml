@@ -48,6 +48,8 @@
         </activity>
         <activity android:name=".ui.mePack.RegisterActivity">
         </activity>
+        <activity android:name=".ui.mePack.MeSmallActivity">
+        </activity>
         <activity android:name=".ui.mePack.MeMyActivity">
         </activity>
         <activity android:name=".ui.findPack.subject.SubjectContentActivity">
@@ -57,11 +59,6 @@
         <activity android:name=".ui.findPack.FindMajorActivity">
         </activity>
         <activity android:name=".ui.teachPack.source.TeachSourceFileUpdataActivity">
-        </activity>
-
-        <service android:name=".ui.teachPack.source.FileDownloadService"/>
-
-        <activity android:name=".ui.teachPack.source.TeachSourceFileDownActivity">
         </activity>
     </application>
 
