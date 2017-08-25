@@ -8,6 +8,7 @@
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
     <uses-permission android:name="android.permission.READ_PHONE_STATE"/>
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE"/>
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
     <!-- 基础模块 END -->
     <!-- BmobSDK权限 -->
     <!-- 允许联网 -->
@@ -58,6 +59,9 @@
         </activity>
         <activity android:name=".ui.teachPack.source.TeachSourceFileUpdataActivity">
         </activity>
+
+        <service android:name=".ui.teachPack.source.FileDownloadService"/>
+
         <activity android:name=".ui.teachPack.source.TeachSourceFileDownActivity">
         </activity>
     </application>

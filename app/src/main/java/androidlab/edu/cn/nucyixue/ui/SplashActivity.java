@@ -19,6 +19,7 @@ public class SplashActivity extends BaseActivity {
         RxPermissions mRxPermissions = new RxPermissions(this);
         startActivity(intent);
         mRxPermissions.requestEach(Manifest.permission.WRITE_EXTERNAL_STORAGE,
+                Manifest.permission.READ_EXTERNAL_STORAGE,
                 Manifest.permission.SEND_SMS)
                 .subscribe(new Consumer<Permission>() {
                     @Override
