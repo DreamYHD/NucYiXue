@@ -23,5 +23,6 @@ public class TeachSourceAdapter extends BaseRecyclerAdapter<AVObject> {
         mHolder.setText(R.id.source_item_downnum,mAVObject.get("downnum").toString());
         String [] mStrings = mAVObject.get("time").toString().split("日");
         mHolder.setText(R.id.source_item_time,mStrings[0]+"日");
+
     }
 }
