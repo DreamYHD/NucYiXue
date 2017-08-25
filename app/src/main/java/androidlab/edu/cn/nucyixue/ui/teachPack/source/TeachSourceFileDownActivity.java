@@ -1,5 +1,7 @@
 package androidlab.edu.cn.nucyixue.ui.teachPack.source;
 
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.support.v7.widget.Toolbar;
@@ -34,6 +36,7 @@ public class TeachSourceFileDownActivity extends BaseActivity {
     public String url = null;
     public String type =null;
     public String name =null;
+    public int downNum;
     private static final String TAG = "TeachSourceFileDownActi";
     @BindView(R.id.source_file_down_toolbar)
     Toolbar mSourceFileDownToolbar;
@@ -53,6 +56,7 @@ public class TeachSourceFileDownActivity extends BaseActivity {
     ImageView mSourceDownBtn;
     @BindView(R.id.source_down_progress_bar)
     ProgressBar mSourceDownProgressBar;
+    private AVObject mAVObject;
     @Override
     protected void logicActivity(Bundle mSavedInstanceState) {
 
@@ -68,7 +72,7 @@ public class TeachSourceFileDownActivity extends BaseActivity {
             }
         });
         Bundle mBundle = getIntent().getExtras();
-        AVObject mAVObject = AVObject.createWithoutData("FileInfo",mBundle.getString("fileId"));
+        mAVObject = AVObject.createWithoutData("FileInfo",mBundle.getString("fileId"));
         mAVObject.fetchInBackground(new GetCallback<AVObject>() {
             @Override
             public void done(AVObject mAVObject, AVException mE) {
@@ -79,6 +83,7 @@ public class TeachSourceFileDownActivity extends BaseActivity {
                     mSourceDownUser.setText("上传用户 "+mAVObject.get("user").toString());
                     mSourceDownTime.setText("上传时间 "+mAVObject.get("time").toString());
                     type = mAVObject.get("type").toString();
+                    mSourceDownShowFileName.setText(name+"."+type);
                     mSourceTextShow.setText(mAVObject.get("description").toString());
                     String []m = mAVObject.get("fileId").toString().split("\"");
                     Log.i(TAG, "done: success "+m[7]);
@@ -97,6 +102,7 @@ public class TeachSourceFileDownActivity extends BaseActivity {
                     });
 
                 }
+                downNum = mAVObject.getInt("downnun");
             }
         });
     }
@@ -118,16 +124,19 @@ public class TeachSourceFileDownActivity extends BaseActivity {
                 } else {
                     Log.d("saved", "出错了" + e.getMessage());
                 }
-                File downloadedFile = new File(Environment.getExternalStorageDirectory() + name+type);
+                File downloadedFile = new File("/storage/emulated/0/" + name+"."+type);
                 FileOutputStream fout = null;
                 try {
                     fout = new FileOutputStream(downloadedFile);
                     fout.write(bytes);
-                    Log.d("saved", "文件写入成功.");
+                    snackBar(findViewById(R.id.source_down_btn), "文件下载成功" + downloadedFile.getPath().toString(), 1);
+                    Log.d("saved", "文件写入成功."+downloadedFile.getPath().toString());
+                    mAVObject.put("downnum",++downNum);
+                    mAVObject.saveInBackground();
                     fout.close();
                 } catch (FileNotFoundException e1) {
                     e1.printStackTrace();
-                    Log.d("saved", "文件找不到.." + e1.getMessage());
+                    Log.d("saved", "文件找不到.." + e1.getMessage()+e.toString());
                 } catch (IOException e1) {
                     Log.d("saved", "文件读取异常.");
                 }

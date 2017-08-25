@@ -76,7 +76,6 @@
         android:background="#ffff"
         android:layout_marginRight="15dp"
         android:layout_marginLeft="15dp"
-        android:textColor="#fdfdfd"
         android:paddingLeft="15dp"
         android:id="@+id/source_text_show"
         android:layout_width="match_parent"

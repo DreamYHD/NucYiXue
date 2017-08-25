@@ -43,7 +43,6 @@ public class FileDownloadService extends Service {
 
 
     }
-
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         Log.d(TAG, "onStartCommand() executed");

@@ -35,7 +35,4 @@ public class FileUtils {
 
         return filePath.substring(filePath.lastIndexOf("/")+1);
     }
-
-
-
 }
