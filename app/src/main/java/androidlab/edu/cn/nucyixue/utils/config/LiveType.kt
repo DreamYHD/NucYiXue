@@ -2,6 +2,7 @@ package androidlab.edu.cn.nucyixue.utils.config
 
 import android.support.annotation.IdRes
 import androidlab.edu.cn.nucyixue.R
+import java.util.*
 
 /**
  * Live Type
