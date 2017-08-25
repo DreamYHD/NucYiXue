@@ -88,6 +88,7 @@
             android:layout_width="55dp"
             android:layout_height="50dp">
             <TextView
+                android:id="@+id/live_num"
                 android:textColor="#696868"
                 android:gravity="center"
                 android:text="0"
@@ -381,6 +382,11 @@
                 android:layout_height="wrap_content"/>
 
         </RelativeLayout>
+
+        <ImageView
+            android:background="#e4e3e3"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"/>
 
         <RelativeLayout
             android:id="@+id/rl_logout"
