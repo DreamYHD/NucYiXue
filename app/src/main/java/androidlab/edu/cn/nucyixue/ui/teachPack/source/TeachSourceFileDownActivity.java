@@ -126,6 +126,7 @@ public class TeachSourceFileDownActivity extends BaseActivity {
                 }
                 File downloadedFile = new File("/storage/emulated/0/" + name+"."+type);
                 FileOutputStream fout = null;
+
                 try {
                     fout = new FileOutputStream(downloadedFile);
                     fout.write(bytes);
