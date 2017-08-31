@@ -20,6 +20,7 @@ import com.avos.avoscloud.im.v2.AVIMException
 import com.avos.avoscloud.im.v2.callback.AVIMConversationCallback
 import com.avos.avoscloud.im.v2.callback.AVIMConversationQueryCallback
 import kotlinx.android.synthetic.main.activity_live_comment.*
+import java.util.*
 
 /**
  * Live star 待修改

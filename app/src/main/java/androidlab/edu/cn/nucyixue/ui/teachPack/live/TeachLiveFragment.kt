@@ -28,9 +28,9 @@ import com.avos.avoscloud.im.v2.AVIMException
 import com.avos.avoscloud.im.v2.callback.AVIMConversationCallback
 import com.avos.avoscloud.im.v2.callback.AVIMConversationQueryCallback
 import com.zhy.adapter.recyclerview.base.ViewHolder
-import java.text.SimpleDateFormat
+
 import java.util.*
-import kotlin.collections.ArrayList
+
 
 /**
  * Lives order by star and start time

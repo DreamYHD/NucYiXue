@@ -1,8 +1,7 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
              xmlns:tools="http://schemas.android.com/tools"
              android:layout_width="match_parent"
              android:layout_height="match_parent"
-              android:orientation="vertical"
              tools:context="androidlab.edu.cn.nucyixue.ui.xuanshangPack.XuanshangFragment">
 
     <android.support.design.widget.AppBarLayout
@@ -28,6 +27,15 @@
             </RelativeLayout>
         </android.support.v7.widget.Toolbar>
     </android.support.design.widget.AppBarLayout>
+    <android.support.v7.widget.RecyclerView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+    </android.support.v7.widget.RecyclerView>
+    <android.support.design.widget.FloatingActionButton
+
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
 
 
-</LinearLayout>
+</android.support.design.widget.CoordinatorLayout>

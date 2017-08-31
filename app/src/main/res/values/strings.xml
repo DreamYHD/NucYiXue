@@ -26,4 +26,9 @@
 
     <string name="live_comment">给主讲人的表现打个分</string>
     <string name="live_comment_skip">稍后评价</string>
+    <string name="show_renwu">任务发布</string>
+    <string name="send_renwu">发布</string>
+    <string name="get_image">获取图片</string>
+    <string name="photo">拍照</string>
+    <string name="select_image">图片选择器</string>
 </resources>
