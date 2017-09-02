@@ -48,18 +48,33 @@
     </android.support.design.widget.AppBarLayout>
 
     <EditText
-        android:textSize="20sp"
-        android:layout_margin="10dp"
-        android:background="@drawable/shape_back"
+
+        android:textColor="#78f2ff"
+        android:paddingLeft="10dp"
+        android:hint="描述相关信息"
         android:id="@+id/xuanshang_edit_show"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:background="@drawable/shape_back"
         android:gravity="top|left"
         android:inputType="textMultiLine"
         android:lines="3"
         android:maxWidth="5.0dip"
         android:minWidth="10.0dip"
-        android:scrollHorizontally="false"/>
+        android:scrollHorizontally="false"
+        android:textSize="20sp"/>
+    <EditText
+        android:id="@+id/xuanshang_send_tags"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:textSize="10sp"
+        android:textColor="#78f2ff"
+        android:paddingLeft="10dp"
+        android:background="@drawable/shape_back"
+        android:hint="添加标签eg: #高等数学#线性代数"
+        android:layout_width="match_parent"
+        android:layout_height="30dp"/>
 
     <android.support.v7.widget.RecyclerView
         android:layout_marginLeft="10dp"
@@ -111,6 +126,12 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"/>
     </LinearLayout>
+    <ProgressBar
+        android:id="@+id/xuanshan_send_progressbar"
+        android:layout_gravity="center"
+        style="@style/Widget.AppCompat.ProgressBar"
+        android:layout_width="50dp"
+        android:layout_height="50dp"/>
 
 
 

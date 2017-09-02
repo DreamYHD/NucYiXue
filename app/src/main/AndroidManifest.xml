@@ -81,6 +81,8 @@
         </activity>
         <activity android:name=".ui.xuanshangPack.XuanshangGetActivity">
         </activity>
+        <activity android:name=".ui.CameraActivity">
+        </activity>
     </application>
 
 </manifest>
