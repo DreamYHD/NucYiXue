@@ -1,12 +1,22 @@
 package androidlab.edu.cn.nucyixue.ui.xuanshangPack;
 
 
-import android.app.Activity;
+import android.content.Intent;
+import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.RecyclerView;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.ProgressBar;
 
 import androidlab.edu.cn.nucyixue.R;
 import androidlab.edu.cn.nucyixue.base.BaseFragment;
-import androidlab.edu.cn.nucyixue.utils.ActivityUtils;
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import butterknife.OnClick;
+import butterknife.Unbinder;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -14,13 +24,22 @@ import androidlab.edu.cn.nucyixue.utils.ActivityUtils;
 public class XuanshangFragment extends BaseFragment {
 
 
-    public static XuanshangFragment getInstance(){
+    @BindView(R.id.xuanshang_recyclerview)
+    RecyclerView mXuanshangRecyclerview;
+    @BindView(R.id.xuanshang_progressbar)
+    ProgressBar mXuanshangProgressbar;
+    @BindView(R.id.xuanshang_add_floatingActionButton)
+    FloatingActionButton mXuanshangAddFloatingActionButton;
+    Unbinder unbinder;
+
+    public static XuanshangFragment getInstance() {
         return new XuanshangFragment();
     }
 
 
     @Override
     protected void init() {
+        mXuanshangProgressbar.setVisibility(View.GONE);
 
     }
 
@@ -31,5 +50,12 @@ public class XuanshangFragment extends BaseFragment {
 
     @Override
     protected void logic() {
+    }
+    @OnClick(R.id.xuanshang_add_floatingActionButton)
+    public void onViewClicked() {
+        Bundle mBundle = new Bundle();
+        Intent mIntent = new Intent(getContext(),XuanshangSendActivity.class);
+        mIntent.putExtras(mBundle);
+        startActivity(mIntent);
     }
 }

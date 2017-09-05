@@ -5,7 +5,6 @@ import android.app.Dialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
-import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.Gravity;
@@ -37,6 +36,7 @@ import java.util.List;
 
 import androidlab.edu.cn.nucyixue.R;
 import androidlab.edu.cn.nucyixue.base.BaseActivity;
+import androidlab.edu.cn.nucyixue.base.BaseRecyclerAdapter;
 import androidlab.edu.cn.nucyixue.ui.CameraActivity;
 import androidlab.edu.cn.nucyixue.utils.FileUtils;
 import androidlab.edu.cn.nucyixue.utils.FlexTextUtil;
@@ -66,6 +66,10 @@ public class XuanshangSendActivity extends BaseActivity {
     EditText mXuanshangSendTags;
     @BindView(R.id.xuanshan_send_progressbar)
     ProgressBar mXuanshanSendProgressbar;
+    @BindView(R.id.xuanhang_send_add_image)
+    ImageView mXuanhangSendAddImage;
+    @BindView(R.id.imageView2)
+    ImageView mImageView2;
     private XunshangSendImageAdapter mXunshangSendImageAdapter;
     private GridLayoutManager mGridLayoutManager;
     public static final int CAMERA_CODE = 10;
@@ -75,42 +79,17 @@ public class XuanshangSendActivity extends BaseActivity {
 
     @Override
     protected void logicActivity(Bundle mSavedInstanceState) {
-        mGridLayoutManager = new GridLayoutManager(this, 4, LinearLayoutManager.VERTICAL, false);
+        mGridLayoutManager = new GridLayoutManager(this, 4);
         mXuanshangImageRecycler.setLayoutManager(mGridLayoutManager);
-        mXunshangSendImageAdapter = new XunshangSendImageAdapter(mStringList, this);
-        mXunshangSendImageAdapter.setOnclickerListener(new XunshangSendImageAdapter.OnReClickerListener() {
+        mXunshangSendImageAdapter = new XunshangSendImageAdapter(R.layout.activity_xuanshang_send_image_item, this, mFileList);
+        mXunshangSendImageAdapter.setOnClickerListener(new BaseRecyclerAdapter.OnClickerListener() {
             @Override
             public void click(View mView, int position) {
-                //自定义底部弹出dialog
-                Dialog mDialog = new Dialog(XuanshangSendActivity.this, R.style.BottomDialog);
-                final View mBottom = LayoutInflater.from(mActivity).inflate(R.layout.dialog_content_circle, null);
 
-                TextView mTextViewCamera = mBottom.findViewById(R.id.xuanshang_sned_bottom_camera);
-                TextView mTextViewSelect = mBottom.findViewById(R.id.xuanshang_send_bottom_select);
-                mTextViewCamera.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View mView) {
-                        onClickStartCamera(mView);
-                    }
-                });
-                mTextViewSelect.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View mView) {
-                        onClickStartSelectImage(mView);
-                    }
-                });
-
-                mDialog.setContentView(mBottom);
-                ViewGroup.MarginLayoutParams params = (ViewGroup.MarginLayoutParams) mBottom.getLayoutParams();
-                params.width = getResources().getDisplayMetrics().widthPixels - FlexTextUtil.dp2px(mActivity, 16f);
-                params.bottomMargin = FlexTextUtil.dp2px(mActivity, 8f);
-                mBottom.setLayoutParams(params);
-                mDialog.getWindow().setGravity(Gravity.BOTTOM);
-                mDialog.getWindow().setWindowAnimations(R.style.BottomDialog_Animation);
-                mDialog.show();
             }
         });
     }
+
     //通过拍照获取题片
     private void onClickStartCamera(View mView) {
         RxPermissions mRxPermissions = new RxPermissions(this);
@@ -122,14 +101,15 @@ public class XuanshangSendActivity extends BaseActivity {
                             Log.i(TAG, "accept: success get camera permission");
                             Intent mIntent = new Intent(XuanshangSendActivity.this, CameraActivity.class);
                             startActivityForResult(mIntent, CAMERA_CODE);
-
                         }
                     }
                 });
 
     }
+
     /**
      * 通过图片选择器获取图片
+     *
      * @param mView
      */
     private void onClickStartSelectImage(View mView) {
@@ -150,14 +130,18 @@ public class XuanshangSendActivity extends BaseActivity {
                 String path = data.getStringExtra("path");
                 Log.i(TAG, "onActivityResult: " + path);
                 mFileList.add(path);
+                mXunshangSendImageAdapter.notifyDataSetChanged();
                 break;
             case 100:
                 mFileList.addAll(data.getStringArrayListExtra("paths"));
+                mXunshangSendImageAdapter.notifyDataSetChanged();
+
                 break;
             default:
                 break;
         }
     }
+
     @Override
     protected int getLayoutId() {
         return R.layout.activity_xuanshang_send;
@@ -182,6 +166,7 @@ public class XuanshangSendActivity extends BaseActivity {
      * 通过高德地图获取位置信息
      */
     private void xuanshangGetLocation() {
+        Log.i(TAG, "xuanshangGetLocation: click");
         AMapLocationClient aMapLocationClient = new AMapLocationClient(this);
         aMapLocationClient.setLocationListener(new AMapLocationListener() {
             @Override
@@ -196,7 +181,6 @@ public class XuanshangSendActivity extends BaseActivity {
                         //amapLocation.getDistrict();//城区信息
                         //街道信息
                         mXuanshangSendLocationText.setText(amapLocation.getStreet());
-
                     }
                 }
             }
@@ -205,39 +189,47 @@ public class XuanshangSendActivity extends BaseActivity {
 
     /**
      * 发送悬赏信息
+     *
      * @param mView
      */
     private void xuanshangSendClick(final View mView) {
         mXuanshanSendProgressbar.setVisibility(View.VISIBLE);
-        for (final String m :
-                mFileList) {
+        for (int j = 0; j < mFileList.size(); j++) {
             final AVFile file;
             try {
-                file = AVFile.withAbsoluteLocalPath(FileUtils.getFileName(m), m);
+                file = AVFile.withAbsoluteLocalPath(FileUtils.getFileName(mFileList.get(j)), mFileList.get(j));
+                final int finalJ = j;
+                final int finalJ2 = j + 1;
                 file.saveInBackground(new SaveCallback() {
                     @Override
                     public void done(AVException mE) {
                         if (mE == null) {
-                            mStringList.add(m);
-                            AVObject mAVObject = new AVObject("Xuanshang");
-                            mAVObject.put("description", mXuanshangEditShow.getText());
-                            mAVObject.put("tags",mXuanshangSendTags.getText());
-                            mAVObject.put("images",mStringList);
-                            if (mXuanshangSendLocationText.getText() != null && !mXuanshangSendLocationText.getText().equals("")){
-                                mAVObject.put("loaction",mXuanshangSendLocationText.getText().toString());
-                            }
-                            SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-                            Date date = new Date(System.currentTimeMillis());
-                            df.format(date);//定位时间
-                            mAVObject.put("time",df.toString());
-                            mAVObject.put("money",mXuanshangSendMoneyEdit.getText().toString());
-                            mAVObject.saveInBackground(new SaveCallback() {
-                                @Override
-                                public void done(AVException mE) {
-                                    snackBar(mView,"悬赏发布成功",0);
-                                    mActivity.finish();
+                            mStringList.add(mFileList.get(finalJ));
+                            if (mAVUserFinal.getObjectId() != null && finalJ2 == mFileList.size()) {
+                                AVObject mAVObject = new AVObject("Xuanshang");
+                                mAVObject.put("description", mXuanshangEditShow.getText());
+                                mAVObject.put("tags", mXuanshangSendTags.getText());
+                                mAVObject.put("images", mStringList);
+                                mAVObject.put("firstImage", mStringList.get(0));
+                                mAVObject.put("user", mAVUserFinal.getObjectId());
+                                if (mXuanshangSendLocationText.getText() != null && !mXuanshangSendLocationText.getText().equals("")) {
+                                    mAVObject.put("loaction", mXuanshangSendLocationText.getText().toString());
                                 }
-                            });
+                                SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+                                Date date = new Date(System.currentTimeMillis());
+                                df.format(date);//定位时间
+                                mAVObject.put("time", df.toString());
+                                mAVObject.put("money", mXuanshangSendMoneyEdit.getText().toString());
+                                mAVObject.saveInBackground(new SaveCallback() {
+                                    @Override
+                                    public void done(AVException mE) {
+                                        snackBar(mView, "悬赏发布成功", 0);
+                                        mActivity.finish();
+                                    }
+                                });
+                            } else {
+                                snackBar(mView, "请先登录", 0);
+                            }
                         }
                     }
                 });
@@ -246,5 +238,39 @@ public class XuanshangSendActivity extends BaseActivity {
                 mE.printStackTrace();
             }
         }
+    }
+
+    /**
+     * 增加图片
+     */
+    @OnClick(R.id.xuanhang_send_add_image)
+    public void onViewClicked() {
+        //自定义底部弹出dialog
+        Dialog mDialog = new Dialog(XuanshangSendActivity.this, R.style.BottomDialog);
+        final View mBottom = LayoutInflater.from(mActivity).inflate(R.layout.dialog_content_circle, null);
+
+        TextView mTextViewCamera = mBottom.findViewById(R.id.xuanshang_sned_bottom_camera);
+        TextView mTextViewSelect = mBottom.findViewById(R.id.xuanshang_send_bottom_select);
+        mTextViewCamera.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View mView) {
+                onClickStartCamera(mView);
+            }
+        });
+        mTextViewSelect.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View mView) {
+                onClickStartSelectImage(mView);
+            }
+        });
+
+        mDialog.setContentView(mBottom);
+        ViewGroup.MarginLayoutParams params = (ViewGroup.MarginLayoutParams) mBottom.getLayoutParams();
+        params.width = getResources().getDisplayMetrics().widthPixels - FlexTextUtil.dp2px(mActivity, 16f);
+        params.bottomMargin = FlexTextUtil.dp2px(mActivity, 8f);
+        mBottom.setLayoutParams(params);
+        mDialog.getWindow().setGravity(Gravity.BOTTOM);
+        mDialog.getWindow().setWindowAnimations(R.style.BottomDialog_Animation);
+        mDialog.show();
     }
 }
