@@ -32,12 +32,12 @@
         "source": "F:\\android\\NucYiXue\\leancloudchatkit\\src\\main\\res\\drawable\\lcim_bottom_bar_picture_button_bg.xml"
     },
     {
-        "merged": "F:\\android\\NucYiXue\\leancloudchatkit\\build\\intermediates\\res\\merged\\debug\\drawable\\abc_btn_check_material.xml",
-        "source": "C:\\Users\\Administrator\\.android\\build-cache\\9c1500967dc3b1e63716d3addcb80890f562ca66\\output\\res\\drawable\\abc_btn_check_material.xml"
-    },
-    {
         "merged": "F:\\android\\NucYiXue\\leancloudchatkit\\build\\intermediates\\res\\merged\\debug\\drawable\\abc_dialog_material_background.xml",
         "source": "C:\\Users\\Administrator\\.android\\build-cache\\9c1500967dc3b1e63716d3addcb80890f562ca66\\output\\res\\drawable\\abc_dialog_material_background.xml"
+    },
+    {
+        "merged": "F:\\android\\NucYiXue\\leancloudchatkit\\build\\intermediates\\res\\merged\\debug\\drawable\\abc_btn_check_material.xml",
+        "source": "C:\\Users\\Administrator\\.android\\build-cache\\9c1500967dc3b1e63716d3addcb80890f562ca66\\output\\res\\drawable\\abc_btn_check_material.xml"
     },
     {
         "merged": "F:\\android\\NucYiXue\\leancloudchatkit\\build\\intermediates\\res\\merged\\debug\\drawable\\abc_ic_ab_back_material.xml",

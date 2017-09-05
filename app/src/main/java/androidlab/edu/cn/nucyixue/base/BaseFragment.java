@@ -30,12 +30,12 @@ public abstract class BaseFragment extends Fragment {
         unbinder=ButterKnife.bind(this,mView);
         Log.i(TAG, "onCreateView: "+getResourcesLayout());
         mAVUserFinal = AVUser.getCurrentUser();
-        init();
+        init(mView);
         logic();
         return mView;
     }
 
-    protected abstract void init();
+    protected abstract void init(View mView);
 
     protected abstract int getResourcesLayout();
 

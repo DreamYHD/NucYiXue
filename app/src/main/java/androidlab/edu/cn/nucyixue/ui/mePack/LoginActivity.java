@@ -74,11 +74,14 @@ public class LoginActivity extends BaseActivity {
                                     Log.i(TAG, "登录失败" + e);
                                 }else{
                                     toast("登录成功",0);
-                                    startActivity(new Intent(LoginActivity.this, MainActivity.class));
-                                    finish();
+                                    mActivity.finish();
                                 }
                             }
                         });
+                    }else {
+                        mAVUserFinal = AVUser.getCurrentUser();
+                        toast("登录成功",0);
+                        mActivity.finish();
                     }
                 }else{
                     toast("登录失败",0);

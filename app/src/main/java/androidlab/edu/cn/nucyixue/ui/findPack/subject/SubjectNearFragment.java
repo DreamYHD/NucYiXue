@@ -1,11 +1,8 @@
 package androidlab.edu.cn.nucyixue.ui.findPack.subject;
 
 
-import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 
 import androidlab.edu.cn.nucyixue.R;
 import androidlab.edu.cn.nucyixue.base.BaseFragment;
@@ -22,7 +19,7 @@ public class SubjectNearFragment extends BaseFragment {
     }
 
     @Override
-    protected void init() {
+    protected void init(View mView) {
 
     }
 

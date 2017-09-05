@@ -3,6 +3,7 @@ package androidlab.edu.cn.nucyixue.ui.xuanshangPack;
 import android.Manifest;
 import android.app.Dialog;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -75,13 +76,14 @@ public class XuanshangSendActivity extends BaseActivity {
     public static final int CAMERA_CODE = 10;
     public static final int SELECT_CODE = 100;
     private List<String> mStringList = new ArrayList<>();//图片的url
-    private List<String> mFileList = new ArrayList<>();//存到图片路径
+    private static List<String> mFileList = new ArrayList<>();//存到图片路径
 
     @Override
     protected void logicActivity(Bundle mSavedInstanceState) {
         mGridLayoutManager = new GridLayoutManager(this, 4);
         mXuanshangImageRecycler.setLayoutManager(mGridLayoutManager);
         mXunshangSendImageAdapter = new XunshangSendImageAdapter(R.layout.activity_xuanshang_send_image_item, this, mFileList);
+        mXuanshangImageRecycler.setAdapter(mXunshangSendImageAdapter);
         mXunshangSendImageAdapter.setOnClickerListener(new BaseRecyclerAdapter.OnClickerListener() {
             @Override
             public void click(View mView, int position) {
@@ -89,7 +91,6 @@ public class XuanshangSendActivity extends BaseActivity {
             }
         });
     }
-
     //通过拍照获取题片
     private void onClickStartCamera(View mView) {
         RxPermissions mRxPermissions = new RxPermissions(this);
@@ -106,7 +107,6 @@ public class XuanshangSendActivity extends BaseActivity {
                 });
 
     }
-
     /**
      * 通过图片选择器获取图片
      *
@@ -125,20 +125,29 @@ public class XuanshangSendActivity extends BaseActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        switch (resultCode) {
-            case 101:
-                String path = data.getStringExtra("path");
-                Log.i(TAG, "onActivityResult: " + path);
-                mFileList.add(path);
-                mXunshangSendImageAdapter.notifyDataSetChanged();
-                break;
-            case 100:
-                mFileList.addAll(data.getStringArrayListExtra("paths"));
-                mXunshangSendImageAdapter.notifyDataSetChanged();
+        if (resultCode == RESULT_OK){
+            switch (requestCode) {
+                case 101:
+                    String path = data.getStringExtra("path");
+                    Log.i(TAG, "onActivityResult: " + path);
+                    mFileList.add(path);
+                    Log.i(TAG, "onActivityResult: "+path);
+                    mXunshangSendImageAdapter.notifyDataSetChanged();
+                    break;
+                case SELECT_CODE:
+                    Log.i(TAG, "onActivityResult: select_code");
+                    List<Uri> mList = Matisse.obtainResult(data);
+                    for (Uri m:
+                            mList) {
+                        mFileList.add(m.toString());
+                        Log.i(TAG, "onActivityResult: "+m.toString());
+                        mXunshangSendImageAdapter.notifyDataSetChanged();
+                    }
+                    break;
+                default:
+                     break;
+              }
 
-                break;
-            default:
-                break;
         }
     }
 
@@ -225,6 +234,7 @@ public class XuanshangSendActivity extends BaseActivity {
                                     public void done(AVException mE) {
                                         snackBar(mView, "悬赏发布成功", 0);
                                         mActivity.finish();
+                                        mFileList.clear();
                                     }
                                 });
                             } else {
@@ -246,24 +256,11 @@ public class XuanshangSendActivity extends BaseActivity {
     @OnClick(R.id.xuanhang_send_add_image)
     public void onViewClicked() {
         //自定义底部弹出dialog
-        Dialog mDialog = new Dialog(XuanshangSendActivity.this, R.style.BottomDialog);
+        final Dialog mDialog = new Dialog(XuanshangSendActivity.this, R.style.BottomDialog);
         final View mBottom = LayoutInflater.from(mActivity).inflate(R.layout.dialog_content_circle, null);
 
         TextView mTextViewCamera = mBottom.findViewById(R.id.xuanshang_sned_bottom_camera);
         TextView mTextViewSelect = mBottom.findViewById(R.id.xuanshang_send_bottom_select);
-        mTextViewCamera.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View mView) {
-                onClickStartCamera(mView);
-            }
-        });
-        mTextViewSelect.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View mView) {
-                onClickStartSelectImage(mView);
-            }
-        });
-
         mDialog.setContentView(mBottom);
         ViewGroup.MarginLayoutParams params = (ViewGroup.MarginLayoutParams) mBottom.getLayoutParams();
         params.width = getResources().getDisplayMetrics().widthPixels - FlexTextUtil.dp2px(mActivity, 16f);
@@ -272,5 +269,19 @@ public class XuanshangSendActivity extends BaseActivity {
         mDialog.getWindow().setGravity(Gravity.BOTTOM);
         mDialog.getWindow().setWindowAnimations(R.style.BottomDialog_Animation);
         mDialog.show();
+        mTextViewCamera.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View mView) {
+                onClickStartCamera(mView);
+                mDialog.cancel();
+            }
+        });
+        mTextViewSelect.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View mView) {
+                onClickStartSelectImage(mView);
+                mDialog.cancel();
+            }
+        });
     }
 }

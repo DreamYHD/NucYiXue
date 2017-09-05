@@ -1,25 +1,16 @@
 package androidlab.edu.cn.nucyixue.ui.teachPack.source;
 
 
-import android.content.ComponentName;
-import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.ServiceConnection;
 import android.os.Bundle;
-import android.os.IBinder;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
-import android.support.v4.widget.SwipeRefreshLayout;
-import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 
 import com.avos.avoscloud.AVException;
-import com.avos.avoscloud.AVFile;
 import com.avos.avoscloud.AVObject;
 import com.avos.avoscloud.AVQuery;
 import com.avos.avoscloud.FindCallback;
@@ -31,9 +22,7 @@ import androidlab.edu.cn.nucyixue.R;
 import androidlab.edu.cn.nucyixue.base.BaseFragment;
 import androidlab.edu.cn.nucyixue.base.BaseRecyclerAdapter;
 import butterknife.BindView;
-import butterknife.ButterKnife;
 import butterknife.OnClick;
-import butterknife.Unbinder;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -57,7 +46,7 @@ public class TeachSourceFragment extends BaseFragment {
     }
 
     @Override
-    protected void init() {
+    protected void init(View mView) {
         mListRecycler = new ArrayList<>();
         mTeacherSourceAdapter = new TeachSourceAdapter(R.layout.fragment_teach_source_item, getContext(), mListRecycler);
         mLinearLayoutManager = new LinearLayoutManager(getContext());

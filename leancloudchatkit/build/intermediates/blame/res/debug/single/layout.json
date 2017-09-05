@@ -8,12 +8,12 @@
         "source": "F:\\android\\NucYiXue\\leancloudchatkit\\src\\main\\res\\layout\\lcim_conversation_activity.xml"
     },
     {
-        "merged": "F:\\android\\NucYiXue\\leancloudchatkit\\build\\intermediates\\res\\merged\\debug\\layout\\lcim_chat_item_right_text_layout.xml",
-        "source": "F:\\android\\NucYiXue\\leancloudchatkit\\src\\main\\res\\layout\\lcim_chat_item_right_text_layout.xml"
-    },
-    {
         "merged": "F:\\android\\NucYiXue\\leancloudchatkit\\build\\intermediates\\res\\merged\\debug\\layout\\listitem.xml",
         "source": "C:\\Users\\Administrator\\.android\\build-cache\\94a9097c420bc26fbf4a6b5495d471e78a5e4bae\\output\\res\\layout\\listitem.xml"
+    },
+    {
+        "merged": "F:\\android\\NucYiXue\\leancloudchatkit\\build\\intermediates\\res\\merged\\debug\\layout\\lcim_chat_item_right_text_layout.xml",
+        "source": "F:\\android\\NucYiXue\\leancloudchatkit\\src\\main\\res\\layout\\lcim_chat_item_right_text_layout.xml"
     },
     {
         "merged": "F:\\android\\NucYiXue\\leancloudchatkit\\build\\intermediates\\res\\merged\\debug\\layout\\abc_select_dialog_material.xml",

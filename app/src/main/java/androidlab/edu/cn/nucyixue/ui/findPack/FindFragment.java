@@ -53,7 +53,7 @@ public class FindFragment extends BaseFragment {
     }
 
     @Override
-    protected void init() {
+    protected void init(View mView) {
         mBannerGuideContent.setAdapter(new BGABanner.Adapter<ImageView, Integer>() {
             @Override
             public void fillBannerItem(BGABanner banner, ImageView itemView, Integer model, int position) {

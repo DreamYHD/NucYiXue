@@ -7,6 +7,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.Toolbar;
+import android.view.View;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -38,7 +39,7 @@ public class TeachFragment extends BaseFragment {
     }
 
     @Override
-    protected void init() {
+    protected void init(View mView) {
         TeachLiveFragment mLive = TeachLiveFragment.INSTANCE;
         TeachMapFragment mNear = TeachMapFragment.INSTANCE;
         TeachSourceFragment mSource = TeachSourceFragment.getInstance();
