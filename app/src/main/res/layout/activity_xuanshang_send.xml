@@ -141,11 +141,9 @@
             android:layout_width="30dp"
             android:layout_height="30dp"
             android:src="@drawable/money_color"/>
-
         <EditText
             android:hint="请输入金额"
             android:textSize="14sp"
-
             android:id="@+id/xuanshang_send_money_edit"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

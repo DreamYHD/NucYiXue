@@ -50,6 +50,33 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+
+        <!-- 高德地图 Key -->
+        <meta-data
+            android:name="com.amap.api.v2.apikey"
+            android:value="2dcc39659cce6fdaf96caedf6e06ac0c"/>
+
+        <!-- 定位 Service -->
+        <service android:name="com.amap.api.location.APSService"/>
+
+        <!-- 实时通信模块、推送（均需要加入以下声明） START -->
+        <!-- 实时通信模块、推送都要使用 PushService -->
+        <service android:name="com.avos.avoscloud.PushService"/>
+
+        <receiver android:name="com.avos.avoscloud.AVBroadcastReceiver">
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED"/>
+                <action android:name="android.intent.action.USER_PRESENT"/>
+                <action android:name="android.net.conn.CONNECTIVITY_CHANGE"/>
+            </intent-filter>
+        </receiver>
+        <!-- 实时通信模块、推送 END -->
+
+
+        <!-- 反馈组件（需要加入以下声明）START -->
+        <activity android:name="com.avos.avoscloud.feedback.ThreadActivity"/>
+        <!-- 反馈组件 END -->
+
         <activity android:name=".ui.MainActivity">
         </activity>
         <activity
@@ -80,13 +107,16 @@
         <activity android:name=".ui.xuanshangPack.XuanshangSendActivity">
         </activity>
         <activity android:name=".ui.xuanshangPack.XuanshangGetActivity">
-
         </activity>
         <activity android:name=".ui.CameraActivity">
         </activity>
-        <activity android:name=".ui.teachPack.live.LiveCommentActivity"/>
-        <activity android:name=".ui.teachPack.live.CreateLiveActivity"/>
-        <activity android:name=".ui.imPack.ConversationActivity" />
+        <activity
+            android:name=".ui.teachPack.live.LiveCommentActivity"
+            android:theme="@style/DetailsTheme"/>
+        <activity
+            android:name=".ui.teachPack.live.CreateLiveActivity"
+            android:theme="@style/DetailsTheme"/>
+        <activity android:name=".ui.imPack.ConversationActivity"/>
     </application>
 
 </manifest>

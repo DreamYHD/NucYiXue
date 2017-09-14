@@ -77,6 +77,6 @@ public class FileUtils {
             e.printStackTrace();
         }
 
-        return path;
+        return jpegName;
     }
 }

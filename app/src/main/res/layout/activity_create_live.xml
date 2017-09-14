@@ -49,11 +49,11 @@
 
             <android.support.v7.widget.Toolbar
                 android:id="@+id/toolbar"
-                app:navigationIcon="@drawable/ic_arrow_back_light_24dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
                 android:background="@drawable/toolbar_gradient"
                 app:layout_collapseMode="pin"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"/>
+                app:navigationIcon="@drawable/ic_arrow_back_light_24dp"/>
 
         </android.support.design.widget.CollapsingToolbarLayout>
     </android.support.design.widget.AppBarLayout>
@@ -70,193 +70,198 @@
 
     <android.support.v4.widget.NestedScrollView
         android:id="@+id/nestedScrollView"
-        android:background="@color/colorPrimary"
-        app:layout_behavior="@string/appbar_scrolling_view_behavior"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:background="@color/colorPrimary"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
         <android.support.constraint.ConstraintLayout
-            android:padding="10dp"
+            android:layout_width="match_parent"
 
             android:layout_height="wrap_content"
-            android:layout_width="match_parent">
+            android:padding="10dp">
 
             <android.support.v7.widget.CardView
                 android:id="@+id/card_live_name"
-                app:cardCornerRadius="5dp"
-                app:layout_constraintVertical_bias="0.1"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
                 android:layout_width="0dp"
-                android:layout_height="60dp">
+                android:layout_height="60dp"
+                app:cardCornerRadius="5dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.1">
 
                 <RelativeLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent">
+
                     <ImageView
                         android:id="@+id/img_live_name"
-                        android:src="@drawable/ic_assignment_black_24dp"
-                        android:layout_margin="15dp"
                         android:layout_width="40dp"
-                        android:layout_height="40dp" />
+                        android:layout_height="40dp"
+                        android:layout_margin="15dp"
+                        android:src="@drawable/ic_assignment_black_24dp"/>
 
                     <EditText
                         android:id="@+id/live_name"
+                        android:layout_width="match_parent"
+                        android:layout_height="50dp"
                         android:layout_margin="10dp"
-                        android:textColor="@color/primary_text"
                         android:layout_toEndOf="@+id/img_live_name"
-                        android:textColorHint="@color/secondary_text"
+                        android:background="@null"
                         android:hint="@string/create_name"
                         android:maxLines="1"
-                        android:background="@null"
-                        android:layout_width="match_parent"
-                        android:layout_height="50dp" />
+                        android:textColor="@color/primary_text"
+                        android:textColorHint="@color/secondary_text"/>
                 </RelativeLayout>
 
             </android.support.v7.widget.CardView>
 
             <android.support.v7.widget.CardView
                 android:id="@+id/card_live_price"
-                app:cardCornerRadius="5dp"
-                android:layout_marginTop="10dp"
-                app:layout_constraintTop_toBottomOf="@id/card_live_name"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
                 android:layout_width="0dp"
-                android:layout_height="60dp">
+                android:layout_height="60dp"
+                android:layout_marginTop="10dp"
+                app:cardCornerRadius="5dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/card_live_name">
 
                 <RelativeLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent">
+
                     <ImageView
                         android:id="@+id/live_price_img"
-                        android:src="@drawable/ic_monetization_on_black_24dp"
-                        android:layout_margin="15dp"
                         android:layout_width="40dp"
-                        android:layout_height="40dp" />
+                        android:layout_height="40dp"
+                        android:layout_margin="15dp"
+                        android:src="@drawable/ic_monetization_on_black_24dp"/>
 
                     <EditText
                         android:id="@+id/live_price"
-                        android:inputType="number"
-                        android:layout_margin="10dp"
-                        android:maxLines="1"
-                        android:layout_toEndOf="@+id/live_price_img"
-                        android:textColor="@color/primary_text"
-                        android:textColorHint="@color/secondary_text"
-                        android:hint="@string/create_price"
-                        android:background="@null"
                         android:layout_width="match_parent"
-                        android:layout_height="50dp" />
+                        android:layout_height="50dp"
+                        android:layout_margin="10dp"
+                        android:layout_toEndOf="@+id/live_price_img"
+                        android:background="@null"
+                        android:hint="@string/create_price"
+                        android:inputType="number"
+                        android:maxLines="1"
+                        android:textColor="@color/primary_text"
+                        android:textColorHint="@color/secondary_text"/>
                 </RelativeLayout>
 
             </android.support.v7.widget.CardView>
 
             <android.support.v7.widget.CardView
                 android:id="@+id/card_live_time"
-                app:cardCornerRadius="5dp"
-                android:layout_marginTop="10dp"
-                app:layout_constraintTop_toBottomOf="@+id/card_live_price"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
                 android:layout_width="0dp"
-                android:layout_height="60dp">
+                android:layout_height="60dp"
+                android:layout_marginTop="10dp"
+                app:cardCornerRadius="5dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/card_live_price">
 
                 <RelativeLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent">
+
                     <ImageView
                         android:id="@+id/live_time_img"
-                        android:src="@drawable/ic_event_available_black_24dp"
-                        android:layout_margin="15dp"
                         android:layout_width="40dp"
-                        android:layout_height="40dp" />
+                        android:layout_height="40dp"
+                        android:layout_margin="15dp"
+                        android:src="@drawable/ic_event_available_black_24dp"/>
 
                     <TextView
                         android:id="@+id/live_time"
+                        android:layout_width="match_parent"
+                        android:layout_height="50dp"
                         android:layout_margin="10dp"
                         android:layout_toEndOf="@+id/live_time_img"
+                        android:background="@null"
+                        android:gravity="center_vertical"
                         android:hint="@string/create_time"
                         android:textColor="@color/primary_text"
                         android:textColorHint="@color/secondary_text"
-                        android:gravity="center_vertical"
-                        android:textSize="18sp"
-                        android:background="@null"
-                        android:layout_width="match_parent"
-                        android:layout_height="50dp" />
+                        android:textSize="18sp"/>
                 </RelativeLayout>
 
             </android.support.v7.widget.CardView>
 
             <android.support.v7.widget.CardView
                 android:id="@+id/card_live_summary"
-                app:cardCornerRadius="5dp"
-                android:layout_marginTop="10dp"
-                app:layout_constraintTop_toBottomOf="@+id/card_live_time"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
                 android:layout_width="0dp"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                app:cardCornerRadius="5dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/card_live_time">
 
                 <RelativeLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent">
+
                     <ImageView
                         android:id="@+id/live_summary_img"
-                        android:src="@drawable/ic_gesture_black_24dp"
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
                         android:layout_centerVertical="true"
                         android:layout_margin="15dp"
-                        android:layout_width="40dp"
-                        android:layout_height="40dp" />
+                        android:src="@drawable/ic_gesture_black_24dp"/>
 
                     <EditText
                         android:id="@+id/live_summary"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
                         android:layout_margin="10dp"
                         android:layout_toEndOf="@+id/live_summary_img"
-                        android:textColor="@color/primary_text"
-                        android:textColorHint="@color/secondary_text"
-                        android:minLines="5"
-                        android:hint="@string/create_summary"
                         android:background="@null"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content" />
+                        android:hint="@string/create_summary"
+                        android:minLines="5"
+                        android:textColor="@color/primary_text"
+                        android:textColorHint="@color/secondary_text"/>
                 </RelativeLayout>
 
             </android.support.v7.widget.CardView>
 
             <android.support.v7.widget.CardView
                 android:id="@+id/card_live_type"
-                app:cardCornerRadius="5dp"
-                android:layout_marginTop="10dp"
-                app:layout_constraintTop_toBottomOf="@+id/card_live_summary"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
                 android:layout_width="0dp"
-                android:layout_height="60dp">
+                android:layout_height="60dp"
+                android:layout_marginTop="10dp"
+                app:cardCornerRadius="5dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/card_live_summary">
 
                 <RelativeLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent">
+
                     <ImageView
                         android:id="@+id/live_type_img"
-                        android:src="@drawable/ic_apps_black_24dp"
-                        android:layout_margin="10dp"
                         android:layout_width="40dp"
-                        android:layout_height="40dp" />
+                        android:layout_height="40dp"
+                        android:layout_margin="10dp"
+                        android:src="@drawable/ic_apps_black_24dp"/>
 
                     <TextView
                         android:id="@+id/live_type"
+                        android:layout_width="match_parent"
+                        android:layout_height="50dp"
                         android:layout_margin="10dp"
                         android:layout_toEndOf="@+id/live_type_img"
+                        android:background="@null"
+                        android:gravity="center_vertical"
                         android:hint="@string/create_type"
                         android:textColor="@color/primary_text"
                         android:textColorHint="@color/secondary_text"
-                        android:gravity="center_vertical"
-                        android:textSize="18sp"
-                        android:background="@null"
-                        android:layout_width="match_parent"
-                        android:layout_height="50dp" />
+                        android:textSize="18sp"/>
                 </RelativeLayout>
 
             </android.support.v7.widget.CardView>

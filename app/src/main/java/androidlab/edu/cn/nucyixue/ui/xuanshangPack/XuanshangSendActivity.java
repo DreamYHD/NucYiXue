@@ -23,6 +23,7 @@ import com.amap.api.location.AMapLocationListener;
 import com.avos.avoscloud.AVException;
 import com.avos.avoscloud.AVFile;
 import com.avos.avoscloud.AVObject;
+import com.avos.avoscloud.AVUser;
 import com.avos.avoscloud.SaveCallback;
 import com.tbruyelle.rxpermissions2.RxPermissions;
 import com.zhihu.matisse.Matisse;
@@ -30,6 +31,8 @@ import com.zhihu.matisse.MimeType;
 import com.zhihu.matisse.engine.impl.GlideEngine;
 
 import java.io.FileNotFoundException;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -75,7 +78,7 @@ public class XuanshangSendActivity extends BaseActivity {
     private GridLayoutManager mGridLayoutManager;
     public static final int CAMERA_CODE = 10;
     public static final int SELECT_CODE = 100;
-    private List<String> mStringList = new ArrayList<>();//图片的url
+    private static List<String> mStringList = new ArrayList<>();//图片的url
     private static List<String> mFileList = new ArrayList<>();//存到图片路径
 
     @Override
@@ -91,6 +94,7 @@ public class XuanshangSendActivity extends BaseActivity {
             }
         });
     }
+
     //通过拍照获取题片
     private void onClickStartCamera(View mView) {
         RxPermissions mRxPermissions = new RxPermissions(this);
@@ -107,6 +111,7 @@ public class XuanshangSendActivity extends BaseActivity {
                 });
 
     }
+
     /**
      * 通过图片选择器获取图片
      *
@@ -125,28 +130,25 @@ public class XuanshangSendActivity extends BaseActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (resultCode == RESULT_OK){
-            switch (requestCode) {
-                case 101:
-                    String path = data.getStringExtra("path");
-                    Log.i(TAG, "onActivityResult: " + path);
-                    mFileList.add(path);
-                    Log.i(TAG, "onActivityResult: "+path);
+        if (resultCode == 101) {
+            String path = data.getStringExtra("path");
+            Log.i(TAG, "onActivityResult: " + path);
+            mFileList.add(path);
+
+            mXunshangSendImageAdapter.notifyDataSetChanged();
+        }
+
+        if (resultCode == RESULT_OK) {
+            if (requestCode == SELECT_CODE) {
+                Log.i(TAG, "onActivityResult: select_code");
+                List<Uri> mList = Matisse.obtainResult(data);
+                for (Uri m :
+                        mList) {
+                    mFileList.add(m.toString());
+                    Log.i(TAG, "onActivityResult: " + m.toString());
                     mXunshangSendImageAdapter.notifyDataSetChanged();
-                    break;
-                case SELECT_CODE:
-                    Log.i(TAG, "onActivityResult: select_code");
-                    List<Uri> mList = Matisse.obtainResult(data);
-                    for (Uri m:
-                            mList) {
-                        mFileList.add(m.toString());
-                        Log.i(TAG, "onActivityResult: "+m.toString());
-                        mXunshangSendImageAdapter.notifyDataSetChanged();
-                    }
-                    break;
-                default:
-                     break;
-              }
+                }
+            }
 
         }
     }
@@ -206,40 +208,16 @@ public class XuanshangSendActivity extends BaseActivity {
         for (int j = 0; j < mFileList.size(); j++) {
             final AVFile file;
             try {
-                file = AVFile.withAbsoluteLocalPath(FileUtils.getFileName(mFileList.get(j)), mFileList.get(j));
-                final int finalJ = j;
-                final int finalJ2 = j + 1;
+                String path = FileUtils.getFilePahtFromUri(this,Uri.parse(mFileList.get(j)));
+                file = AVFile.withAbsoluteLocalPath(FileUtils.getFileName(path),path);
                 file.saveInBackground(new SaveCallback() {
                     @Override
                     public void done(AVException mE) {
                         if (mE == null) {
-                            mStringList.add(mFileList.get(finalJ));
-                            if (mAVUserFinal.getObjectId() != null && finalJ2 == mFileList.size()) {
-                                AVObject mAVObject = new AVObject("Xuanshang");
-                                mAVObject.put("description", mXuanshangEditShow.getText());
-                                mAVObject.put("tags", mXuanshangSendTags.getText());
-                                mAVObject.put("images", mStringList);
-                                mAVObject.put("firstImage", mStringList.get(0));
-                                mAVObject.put("user", mAVUserFinal.getObjectId());
-                                if (mXuanshangSendLocationText.getText() != null && !mXuanshangSendLocationText.getText().equals("")) {
-                                    mAVObject.put("loaction", mXuanshangSendLocationText.getText().toString());
-                                }
-                                SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-                                Date date = new Date(System.currentTimeMillis());
-                                df.format(date);//定位时间
-                                mAVObject.put("time", df.toString());
-                                mAVObject.put("money", mXuanshangSendMoneyEdit.getText().toString());
-                                mAVObject.saveInBackground(new SaveCallback() {
-                                    @Override
-                                    public void done(AVException mE) {
-                                        snackBar(mView, "悬赏发布成功", 0);
-                                        mActivity.finish();
-                                        mFileList.clear();
-                                    }
-                                });
-                            } else {
-                                snackBar(mView, "请先登录", 0);
-                            }
+                            mStringList.add(file.getUrl());
+                            Log.i(TAG, "done: " + file.getUrl());
+                        } else {
+                            Log.e(TAG, "done: " + mE.getMessage());
                         }
                     }
                 });
@@ -248,8 +226,45 @@ public class XuanshangSendActivity extends BaseActivity {
                 mE.printStackTrace();
             }
         }
-    }
+        for (int i = 0; i < mStringList.size(); i++) {
+            Log.i(TAG, "xuanshangSendClick: " + mStringList.get(i));
+        }
+        AVObject mAVObject = new AVObject("Xuanshang");
+        mAVObject.put("description", mXuanshangEditShow.getText());
 
+        mAVObject.put("images", mStringList);
+        final String[] mStrings;
+        mStrings = mXuanshangSendTags.getText().toString().split("#");
+        mAVObject.put("tags", mStrings);
+        Log.i(TAG, "xuanshangSendClick: "+mStrings.length);
+        //如果有图片的话把第一张图片作为展示的封面
+        if ( mStringList.size() > 0 ){
+            mAVObject.put("firstImage", mStringList.get(0));
+        }
+        mAVObject.put("user", mAVUserFinal.getObjectId());
+        if (mXuanshangSendLocationText.getText() != null && !mXuanshangSendLocationText.getText().equals("")) {
+            mAVObject.put("loaction", mXuanshangSendLocationText.getText().toString());
+        }
+        SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        Date date = new Date(System.currentTimeMillis());
+        mAVObject.put("time", df.format(date));
+        mAVObject.put("money", mXuanshangSendMoneyEdit.getText().toString());
+        mAVObject.saveInBackground(new SaveCallback() {
+            @Override
+            public void done(AVException mE) {
+                if (mE == null) {
+                    snackBar(findViewById(R.id.xuanshang_send_btn), "悬赏发布成功", 0);
+                    mActivity.finish();
+                    mFileList.clear();
+                    mStringList.clear();
+                } else {
+                    Log.e(TAG, "done: " + mE.getMessage());
+                }
+
+            }
+        });
+
+    }
     /**
      * 增加图片
      */

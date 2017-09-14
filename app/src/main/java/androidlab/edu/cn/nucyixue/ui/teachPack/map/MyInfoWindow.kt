@@ -24,13 +24,8 @@ class MyInfoWindow (
 
     override fun getInfoWindow(p0: Marker?): View? {
         val infoWindows : View = LayoutInflater.from(context).inflate(R.layout.item_infowindow, null)
-
         val title_tv : TextView = infoWindows.findViewById(R.id.title)
-        val snippet_tv : TextView = infoWindows.findViewById(R.id.snippet)
-
         title_tv.text = title
-        snippet_tv.text = snippet
-
         return infoWindows
     }
 

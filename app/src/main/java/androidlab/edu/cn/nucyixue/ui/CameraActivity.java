@@ -78,6 +78,7 @@ public class CameraActivity extends AppCompatActivity {
                 String path = FileUtils.saveBitmap("JCamera", bitmap);
                 Intent intent = new Intent();
                 intent.putExtra("path", path);
+                Log.i(TAG, "captureSuccess: "+path);
                 setResult(101, intent);
                 finish();
             }

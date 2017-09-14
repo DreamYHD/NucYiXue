@@ -1,6 +1,7 @@
 package androidlab.edu.cn.nucyixue.ui.teachPack;
 
 
+import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -39,7 +40,7 @@ public class TeachFragment extends BaseFragment {
     }
 
     @Override
-    protected void init(View mView) {
+    protected void init(View mView, Bundle mSavedInstanceState) {
         TeachLiveFragment mLive = TeachLiveFragment.INSTANCE;
         TeachMapFragment mNear = TeachMapFragment.INSTANCE;
         TeachSourceFragment mSource = TeachSourceFragment.getInstance();

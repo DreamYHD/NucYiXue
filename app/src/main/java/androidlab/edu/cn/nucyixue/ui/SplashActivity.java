@@ -32,6 +32,7 @@ public class SplashActivity extends BaseActivity {
                     RxPermissions mRxPermissions = new RxPermissions(SplashActivity.this);
 
                     mRxPermissions.requestEach(Manifest.permission.WRITE_EXTERNAL_STORAGE,
+                            Manifest.permission.ACCESS_FINE_LOCATION,
                             Manifest.permission.SEND_SMS)
                             .subscribe(new Consumer<Permission>() {
                                 @Override
@@ -41,16 +42,20 @@ public class SplashActivity extends BaseActivity {
                                     }else {
                                         Log.e(TAG, "accept: fail"+mPermission.name );
                                     }
+                                    Log.i(TAG, "accept: start success");
                                     startActivity(new Intent(SplashActivity.this, MainActivity.class));
                                     finish();
                                 }
                             });
+                    startActivity(new Intent(SplashActivity.this, MainActivity.class));
+                    mActivity.finish();
 
                 }
             });
         }else{
+
             startActivity(new Intent(SplashActivity.this, MainActivity.class));
-            finish();
+            mActivity.finish();
         }
     }
     @Override

@@ -46,7 +46,7 @@ public class TeachSourceFragment extends BaseFragment {
     }
 
     @Override
-    protected void init(View mView) {
+    protected void init(View mView, Bundle mSavedInstanceState) {
         mListRecycler = new ArrayList<>();
         mTeacherSourceAdapter = new TeachSourceAdapter(R.layout.fragment_teach_source_item, getContext(), mListRecycler);
         mLinearLayoutManager = new LinearLayoutManager(getContext());

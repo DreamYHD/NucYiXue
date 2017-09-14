@@ -35,7 +35,7 @@ public class XuanshangFragment extends BaseFragment {
 
 
     @Override
-    protected void init(View mView) {
+    protected void init(View mView, Bundle mSavedInstanceState) {
         mXuanshangProgressbar.setVisibility(View.GONE);
 
     }
