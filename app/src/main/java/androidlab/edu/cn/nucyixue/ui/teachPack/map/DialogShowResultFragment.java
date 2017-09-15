@@ -20,11 +20,9 @@ import com.avos.avoscloud.AVUser;
 import com.avos.avoscloud.GetCallback;
 
 import java.util.List;
-import java.util.StringTokenizer;
 
 import androidlab.edu.cn.nucyixue.R;
 import androidlab.edu.cn.nucyixue.base.BaseRecyclerAdapter;
-import androidlab.edu.cn.nucyixue.ui.xuanshangPack.XuanshangAdapter;
 import androidlab.edu.cn.nucyixue.ui.xuanshangPack.XunshangSendImageAdapter;
 import androidlab.edu.cn.nucyixue.utils.BigImageDialog;
 import androidlab.edu.cn.nucyixue.utils.config.LCConfig;
@@ -57,7 +55,6 @@ public class DialogShowResultFragment extends DialogFragment {
     private XunshangSendImageAdapter mXunshangSendImageAdapter;
     public DialogShowResultFragment(String mId) {
         mTeamId = mId;
-
     }
     public static DialogShowResultFragment getInstance(String id) {
         return new DialogShowResultFragment(id);
@@ -75,7 +72,6 @@ public class DialogShowResultFragment extends DialogFragment {
             public void click(View mView, int position) {
                 showBigImage(mView, position);
             }
-
         });
         logic(view);
         return view;

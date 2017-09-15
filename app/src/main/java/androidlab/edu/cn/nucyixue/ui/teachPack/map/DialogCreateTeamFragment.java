@@ -8,7 +8,6 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.Window;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -108,7 +107,7 @@ public class DialogCreateTeamFragment extends DialogFragment {
             mTeam.put(MTConfig.getTEAM_PEOPLE(),team_mList);
             mTeam.put(MTConfig.getTEAM_DESCRIPTION(),team_description);
             mTeam.put(MTConfig.getTEAM_START_TIME(),team_time);
-            mTeam.put(MTConfig.getTEAM_LRADER(),team_leader);
+            mTeam.put(MTConfig.getTEAM_LEADER(),team_leader);
             mTeam.saveInBackground(new SaveCallback() {
                 @Override
                 public void done(AVException mE) {

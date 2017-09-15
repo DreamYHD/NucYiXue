@@ -44,11 +44,9 @@ public class DialogShowInviteFragment extends DialogFragment {
     Button mWantJoinBtn;
     Unbinder unbinder;
     private String id;
-
     public DialogShowInviteFragment(String mId) {
         id = mId;
     }
-
     public static DialogShowInviteFragment getInstance(String mId) {
         return new DialogShowInviteFragment(mId);
     }
@@ -61,66 +59,51 @@ public class DialogShowInviteFragment extends DialogFragment {
         logic();
         return mView;
     }
-
     private void logic() {
         AVQuery<AVObject> mTeam = new AVQuery<>(MTConfig.getTABLE_NAME());
-        mTeam.whereEqualTo(MTConfig.getTABLE_ID(), id);
-
-        mTeam.getFirstInBackground(new GetCallback<AVObject>() {
+        mTeam.getInBackground(id, new GetCallback<AVObject>() {
             @Override
             public void done(final AVObject mAVObject, AVException mE) {
+                if ( mE == null){
+                    String current_user_id = AVUser.getCurrentUser().getObjectId();
+                    String team_name = mAVObject.getString(MTConfig.getTEAM_NAME());
+                    String team_start_time = mAVObject.getString(MTConfig.getTEAM_START_TIME());
+                    String team_plan = mAVObject.getString(MTConfig.getTEAM_DESCRIPTION());
+                    String team_leader = mAVObject.getString(MTConfig.getTEAM_LEADER());
+                    final List mPeople = mAVObject.getList(MTConfig.getTEAM_PEOPLE());
+                    int need_people_num = mAVObject.getInt(MTConfig.getTEAM_NUM());
+                    int current_people_num =  mPeople.size();
+                    String team_num = getString(R.string.need_people_num_code) + need_people_num + getString(R.string.cuerrent_people_num_code) + current_people_num;
+                    if ( need_people_num == current_people_num && current_user_id.equals(team_leader)){
+                        mWantJoinBtn.setText(R.string.finish_code);
+                    }else if( need_people_num == current_people_num ){
+                        mWantJoinBtn.setText(R.string.team_is_on_code);
+                    }
+                    mInviteTeamName.setText(team_name);
+                    mInviteTeamTime.setText(team_start_time);
+                    mInviteTeamNum.setText(team_num);
+                    mInviteTeamPlan.setText(team_plan);
+                    mWantJoinBtn.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View mView) {
+                            if (mWantJoinBtn.getText().equals("完成任务")){
 
-                String team_name = mAVObject.getString(MTConfig.getTEAM_NAME());
-                String team_start_time = mAVObject.getString(MTConfig.getTEAM_START_TIME());
-                String team_plan = mAVObject.getString(MTConfig.getTEAM_DESCRIPTION());
-                final List mPeople = mAVObject.getList(MTConfig.getTEAM_PEOPLE());
-                String team_num = "需要人数" + mAVObject.get(MTConfig.getTEAM_NUM()) + "当前人数 " + mPeople.size();
-                mInviteTeamName.setText(team_name);
-                mInviteTeamTime.setText(team_start_time);
-                mInviteTeamNum.setText(team_num);
-                mInviteTeamPlan.setText(team_plan);
-                mWantJoinBtn.setOnClickListener(new View.OnClickListener() {
-                    List mList = mPeople;
-                    @Override
-                    public void onClick(View mView) {
-                        Boolean isOn = false;
-                        for (Object mS : mPeople) {
-                            if (AVUser.getCurrentUser().getObjectId().equals(mS)) {
-                                isOn = true;
+                            }else if (mWantJoinBtn.getText().equals("小组正在进行中")){
+
+                            }else {
+
                             }
                         }
-                        if (isOn) {
-                            Toast.makeText(getContext(), "你已经加入小组，不需要重复加入~", Toast.LENGTH_SHORT).show();
-                        } else if (mPeople.size() == mAVObject.getInt(MTConfig.getTEAM_NUM())) {
-                            Toast.makeText(getContext(), "小组人数已经满了哦~", Toast.LENGTH_SHORT).show();
-                        } else {
-                            AVObject mTeam = AVObject.createWithoutData(MTConfig.getTABLE_NAME(), id);
-                            mList.add("test");
-                            mTeam.put(MTConfig.getTEAM_PEOPLE(), mList);
-                            mTeam.saveInBackground(new SaveCallback() {
-                                @Override
-                                public void done(AVException mE) {
-                                    if (mE == null) {
-                                        Toast.makeText(getContext(), "加入小组成功，快去完成任务吧~", Toast.LENGTH_SHORT).show();
-                                    }
-                                }
-                            });
-
-                        }
-
-                    }
-                });
+                    });
+                }
             }
         });
     }
-
     @Override
     public void onDestroyView() {
         super.onDestroyView();
         unbinder.unbind();
     }
-
-
     /*
     *设置全屏
     */

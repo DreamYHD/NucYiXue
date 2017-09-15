@@ -31,11 +31,13 @@ class MTConfig{
         @JvmStatic
         val TEAM_LOCATION : String = "location" // 小组成立位置
         @JvmStatic
-        val TEAM_LRADER : String = "leader" //小组组长
+        val TEAM_LEADER: String = "leader" //小组组长
         @JvmStatic
         val TEAM_END_TIME : String = "endTime"  // 小组结束时间
         @JvmStatic
         val TEAM_IMAGES : String = "images"  //小组活动结束上传的照片
+        @JvmStatic
+        val TEAM_IS_FINISH : String = "isStart" //小组是否开始
 
 
 

@@ -1,7 +1,5 @@
 package androidlab.edu.cn.nucyixue.ui.teachPack.map
 
-import android.content.DialogInterface
-import android.content.Intent
 import android.graphics.BitmapFactory
 import android.os.Bundle
 import android.support.annotation.Nullable
@@ -13,7 +11,6 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.animation.BounceInterpolator
 import android.widget.Button
-import android.widget.ImageView
 import android.widget.Toast
 import androidlab.edu.cn.nucyixue.R
 import androidlab.edu.cn.nucyixue.utils.LocationManager
@@ -28,7 +25,6 @@ import com.amap.api.maps.model.animation.Animation
 import com.amap.api.maps.model.animation.ScaleAnimation
 import com.avos.avoscloud.*
 import com.bigkoo.pickerview.TimePickerView
-import kotlinx.android.synthetic.main.activity_login.*
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -41,6 +37,10 @@ import java.util.*
  */
 object TeachMapFragment : Fragment() {
     private val TAG: String = this.javaClass.simpleName
+    private val TEAM_FINISH : String = "finish"
+    private val TEAM_ON : String = "on"
+
+
     private var select_time: Calendar = Calendar.getInstance() // Live 开始时间
 
     private lateinit var map: MapView
@@ -64,14 +64,16 @@ object TeachMapFragment : Fragment() {
         queryAllLatlng()
         //设置mark点击事件
         clickerListener()
-
     }
 
     private fun clickerListener() {
         aMap.setOnMarkerClickListener {
             marker->
-            val m = DialogShowInviteFragment.getInstance(marker.snippet)
-            m.show(fragmentManager,"showInvite")
+            if (marker.snippet.endsWith(TEAM_FINISH)){
+                createDialog(marker,TEAM_FINISH)
+            }else{
+                createDialog(marker, TEAM_ON)
+            }
             val myInfo = MyInfoWindow(context, marker.title, "Android 实验室")
             aMap.setInfoWindowAdapter(myInfo)
             marker.showInfoWindow()
@@ -81,7 +83,18 @@ object TeachMapFragment : Fragment() {
             Snackbar.make(map, "已点击", Snackbar.LENGTH_SHORT).show()
         }
     }
+    //根据完成状态获取不同的dialogFragment
+    private fun createDialog(marker: Marker, teaM_FINISH: String) {
+        val s = marker.snippet.split("\"")
+        if (teaM_FINISH.equals(TEAM_FINISH)){
+            val m = DialogShowResultFragment.getInstance(s[0])
+            m.show(fragmentManager,"showInvite")
+        }else{
+            val m = DialogShowInviteFragment.getInstance(s[0])
+            m.show(fragmentManager,"showInvite")
+        }
 
+    }
     private fun queryAllLatlng() {
         val query: AVQuery<AVObject> = AVQuery(MTConfig.TABLE_NAME)
         query.findInBackground(object : FindCallback<AVObject>() {
@@ -106,7 +119,6 @@ object TeachMapFragment : Fragment() {
             }
         })
     }
-
     private fun initMarks(latLng: LatLng, teamId: String) {
         val query: AVQuery<AVObject> = AVQuery(MTConfig.TABLE_NAME)
         query.whereEqualTo(MTConfig.TABLE_ID, teamId)
@@ -114,17 +126,21 @@ object TeachMapFragment : Fragment() {
             override fun done(p0: AVObject?, p1: AVException?) {
                 p0?.let {
                     Log.d(TAG, p0.getString(MTConfig.TEAM_NAME))
-
                     val location: LatLng = latLng
                     // Marker
                     val markerOption = MarkerOptions()
                     markerOption.position(location)
                     markerOption.title(p0.getString(MTConfig.TEAM_NAME)).snippet(p0.objectId)
                     markerOption.draggable(false)//设置Marker可拖动
-                    markerOption.icon(BitmapDescriptorFactory.fromBitmap(BitmapFactory
-                            .decodeResource(getResources(), R.drawable.team)))
-                    // 将Marker设置为贴地显示，可以双指下拉地图查看效果
                     markerOption.setFlat(false)//设置marker平贴地图效果
+                    //判断是否已经完成
+                    if (p0.get(MTConfig.TEAM_IS_FINISH) as Boolean){
+                        markerOption.title(p0.getString(MTConfig.TEAM_NAME)).snippet(p0.objectId+"\""+"finish")
+                        mark(markerOption,R.drawable.zhuhe);
+                    }else{
+                        markerOption.title(p0.getString(MTConfig.TEAM_NAME)).snippet(p0.objectId+"\""+"end")
+                        mark(markerOption,R.drawable.team)
+                    }
                     val marker: Marker = aMap.addMarker(markerOption)
                     val anim: Animation = ScaleAnimation(0f, 1.0f, 0f, 1.0f)
                     val duration: Long = 1000L
@@ -132,14 +148,19 @@ object TeachMapFragment : Fragment() {
                     anim.setInterpolator(BounceInterpolator())
                     marker.setAnimation(anim)
                     marker.startAnimation()
-                    val myInfo = MyInfoWindow(context, marker.title, "Android 实验室")
+                    val myInfo = MyInfoWindow(context, marker.title, "yixuenuc")
                     aMap.setInfoWindowAdapter(myInfo)
                     marker.showInfoWindow()
-
                 }
             }
         })
-
+    }
+    /**
+     * 绘制图标
+     */
+    private fun mark(team: MarkerOptions, icon: Int) {
+        team.icon(BitmapDescriptorFactory.fromBitmap(BitmapFactory
+                .decodeResource(getResources(), icon)))
     }
     private fun initMap() {
         aMap.moveCamera(CameraUpdateFactory.zoomTo(18.0F))
@@ -151,11 +172,9 @@ object TeachMapFragment : Fragment() {
         myLocationStyle.myLocationType(MyLocationStyle.LOCATION_TYPE_MAP_ROTATE)
         aMap.myLocationStyle = myLocationStyle
         aMap.isMyLocationEnabled = true
-
         uiSettings = aMap.uiSettings
         uiSettings.isZoomControlsEnabled = false
     }
-
     private fun initLocation() {
         locationManager = LocationManager(context)
         if (locationManager != null) {
@@ -192,21 +211,17 @@ object TeachMapFragment : Fragment() {
             locationManager?.openLocation()
         }
     }
-
     override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater?.inflate(R.layout.fragment_map, container, false)
     }
-
     override fun onResume() {
         super.onResume()
         map.onResume()
     }
-
     override fun onPause() {
         super.onPause()
         map.onPause()
     }
-
     override fun onDestroy() {
         super.onDestroy()
         if (locationManager != null)
@@ -214,12 +229,10 @@ object TeachMapFragment : Fragment() {
         locationManager = null
         map.onDestroy()
     }
-
     override fun onLowMemory() {
         super.onLowMemory()
         map.onLowMemory()
     }
-
     override fun onSaveInstanceState(outState: Bundle?) {
         super.onSaveInstanceState(outState)
         map.onSaveInstanceState(outState)

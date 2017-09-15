@@ -16,17 +16,14 @@ class MyInfoWindow (
         private val context : Context,
         var title : String,
         val snippet : String) : AMap.InfoWindowAdapter{
-
     //监听自定义 InfoWindow 内容回调
     override fun getInfoContents(p0: Marker?): View? {
         return null
     }
-
     override fun getInfoWindow(p0: Marker?): View? {
         val infoWindows : View = LayoutInflater.from(context).inflate(R.layout.item_infowindow, null)
         val title_tv : TextView = infoWindows.findViewById(R.id.title)
         title_tv.text = title
         return infoWindows
     }
-
 }

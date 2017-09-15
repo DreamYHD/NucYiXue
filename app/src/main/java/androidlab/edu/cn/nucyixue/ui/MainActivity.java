@@ -20,7 +20,6 @@ public class MainActivity extends BaseActivity {
 
     @BindView(R.id.bottom_menu)
     BottomNavigationView mBottomMenu;
-
     @Override
     protected void logicActivity(Bundle mSavedInstanceState) {
         if (mSavedInstanceState==null){

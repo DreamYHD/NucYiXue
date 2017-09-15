@@ -36,4 +36,8 @@
     <string name="team_pan">小组目标计划</string>
     <string name="wang_join">申请加入</string>
     <string name="study_write">学习记录</string>
+    <string name="finish_code">完成任务</string>
+    <string name="need_people_num_code">需要人数</string>
+    <string name="cuerrent_people_num_code">当前人数</string>
+    <string name="team_is_on_code">小组正在进行中</string>
 </resources>
